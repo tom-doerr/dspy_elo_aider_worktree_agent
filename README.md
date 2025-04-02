@@ -2,6 +2,27 @@
 
 A simple implementation of the ELO rating system for comparing LLM outputs using DSPy and DeepSeek.
 
+## Implementation Status
+
+✅ **Core Features Implemented**
+- Basic ELO rating system with K-factor
+- Demo script with simulated comparisons
+- CSV data loading/validation
+- Training CLI scaffolding
+- Rating scaling (1-9 → 100-900)
+
+⚠️ **Current Limitations**
+- Training uses simple scaling (no ML model)
+- LLM comparisons mocked in tests
+- Hardcoded demo responses
+- Minimal error handling
+
+## Roadmap
+- [ ] Implement DSPy BootstrapFewShot training
+- [ ] Add real LLM API integration
+- [ ] Comprehensive comparison validation
+- [ ] API error handling system
+
 ## Installation
 
 ```bash
