@@ -32,26 +32,41 @@ def test_with_real_data(tmp_path):
 
 
 @pytest.mark.integration
+def test_demo_training_data_validation():
+    """Test the demo training data file exists and has valid structure"""
+    data_path = Path("data") / "demo_training_data.csv"
+    if not data_path.exists():
+        pytest.fail(f"Demo training data not found at {data_path}")
+
+    df = pd.read_csv(data_path)
+    
+    # Validate required columns
+    assert {"text", "rating"}.issubset(df.columns), "Missing required columns"
+    
+    # Validate rating range
+    assert df["rating"].between(1, 9).all(), "Ratings must be between 1-9"
+    
+    # Validate sample count
+    assert len(df) >= 10, "Demo data should contain at least 10 samples"
+
+@pytest.mark.integration
 def test_training_script_cli(tmp_path, monkeypatch):
     """Test the training script via command line interface"""
     # Create sample CSV
     csv_path = tmp_path / "training.csv"
-    pd.DataFrame({
-        "text": ["Detailed response", "Brief answer"],
-        "rating": [8, 4]
-    }).to_csv(csv_path, index=False)
-    
+    pd.DataFrame(
+        {"text": ["Detailed response", "Brief answer"], "rating": [8, 4]}
+    ).to_csv(csv_path, index=False)
+
     output_dir = tmp_path / "output"
-    
+
     # Mock command line arguments
-    monkeypatch.setattr(sys, 'argv', [
-        'train.py',
-        str(csv_path),
-        '--output-dir', str(output_dir)
-    ])
-    
+    monkeypatch.setattr(
+        sys, "argv", ["train.py", str(csv_path), "--output-dir", str(output_dir)]
+    )
+
     # Run main
     main()
-    
+
     # Verify outputs
     assert (output_dir / "training_info.txt").exists()
