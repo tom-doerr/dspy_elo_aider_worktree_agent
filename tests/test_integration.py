@@ -26,10 +26,48 @@ def test_with_real_data(tmp_path):
 
     # Test prediction on some samples
     samples = df.sample(2)
-    result = predictor.predict(samples.iloc[0]["text"], samples.iloc[1]["text"])
+    sample1 = samples.iloc[0]
+    sample2 = samples.iloc[1]
+    
+    result = predictor.predict(sample1["text"], sample2["text"])
     assert isinstance(result, tuple)
     assert len(result) == 2
+    
+    # Verify prediction aligns with rating comparison
+    if sample1["rating"] > sample2["rating"]:
+        assert result == (1, 2)
+    else:
+        assert result == (2, 1)
+        
+    # Test rating difference calculation
+    diff = predictor.get_rating_difference(sample1["text"], sample2["text"])
+    expected_diff = abs((sample1["rating"] * 100) - (sample2["rating"] * 100))
+    assert diff == expected_diff
 
+
+@pytest.mark.integration
+def test_real_data_training_flow(tmp_path):
+    """Test complete training and prediction flow with realistic data"""
+    # Create test data that matches spec requirements
+    data = pd.DataFrame({
+        "text": [
+            "Detailed analysis with multiple examples",
+            "Concise summary",
+            "Technical breakdown with diagrams"
+        ],
+        "rating": [8, 5, 9]
+    })
+    
+    # Test training
+    predictor = train_elo_predictor(data, output_dir=tmp_path)
+    
+    # Test predictions
+    result = predictor.predict(data.iloc[0]["text"], data.iloc[2]["text"])
+    assert result == (2, 1)  # Higher rated item should win
+    
+    # Verify rating scaling
+    assert predictor.elo.get_rating(data.iloc[0]["text"]) == 800
+    assert predictor.elo.get_rating(data.iloc[2]["text"]) == 900
 
 @pytest.mark.integration
 def test_demo_training_data_validation():
