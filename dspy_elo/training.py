@@ -53,6 +53,10 @@ def train_elo_predictor(
             r2 = self.elo.get_rating(text2)
             return (1, 2) if r1 > r2 else (2, 1)
 
+        def get_rating_difference(self, text1: str, text2: str) -> float:
+            """Get the absolute ELO rating difference between two texts"""
+            return abs(self.elo.get_rating(text1) - self.elo.get_rating(text2))
+
     predictor = Predictor(elo)
 
     # Save minimal training info (in real implementation would save model)

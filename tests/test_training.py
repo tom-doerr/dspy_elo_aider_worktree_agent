@@ -60,3 +60,11 @@ def test_training_with_empty_data(tmp_path):
     empty_data = pd.DataFrame(columns=["text", "rating"])
     with pytest.raises(ValueError):
         train_elo_predictor(empty_data, output_dir=tmp_path)
+
+
+def test_predictor_rating_difference(training_sample_data, tmp_path):
+    """Test the get_rating_difference method"""
+    predictor = train_elo_predictor(training_sample_data, output_dir=tmp_path)
+    diff = predictor.get_rating_difference("Great response", "Poor response")
+    assert isinstance(diff, float)
+    assert diff > 0  # Should be positive difference
