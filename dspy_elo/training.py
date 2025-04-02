@@ -32,12 +32,18 @@ def train_elo_predictor(
     for _, row in training_data.iterrows():
         elo.ratings[row[text_col]] = row[rating_col] * 100  # Scale 1-9 to 100-900
     
-    # Simple predictor that uses the trained ELO ratings
-    def predictor(text1: str, text2: str) -> Tuple[int, int]:
-        """Predict which text is better based on trained ELO ratings"""
-        r1 = elo.get_rating(text1)
-        r2 = elo.get_rating(text2)
-        return (1, 2) if r1 > r2 else (2, 1)
+    # Create predictor class that uses the trained ELO ratings
+    class Predictor:
+        def __init__(self, elo_system):
+            self.elo = elo_system
+
+        def predict(self, text1: str, text2: str) -> Tuple[int, int]:
+            """Predict which text is better based on trained ELO ratings"""
+            r1 = self.elo.get_rating(text1)
+            r2 = self.elo.get_rating(text2)
+            return (1, 2) if r1 > r2 else (2, 1)
+
+    predictor = Predictor(elo)
     
     # Save minimal training info (in real implementation would save model)
     with open(output_dir / "training_info.txt", "w", encoding='utf-8') as f:

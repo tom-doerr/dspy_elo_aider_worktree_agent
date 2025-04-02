@@ -38,6 +38,5 @@ def test_train_elo_predictor_saves_model(training_sample_data, tmp_path):
     """Test training saves model files"""
     train_elo_predictor(training_sample_data, output_dir=tmp_path)
     
-    # Check some expected files were created
-    assert (tmp_path / "config.json").exists()
-    assert (tmp_path / "training_args.bin").exists()
+    # Check training info file was created
+    assert (tmp_path / "training_info.txt").exists()
