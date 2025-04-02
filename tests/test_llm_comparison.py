@@ -1,6 +1,7 @@
 """Test LLM comparison functionality"""
 
 import pytest
+import dspy
 from unittest.mock import patch
 
 try:
