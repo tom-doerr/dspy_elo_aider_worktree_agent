@@ -2,6 +2,7 @@
 
 import pytest
 import pandas as pd
+import sys
 from pathlib import Path
 
 try:
