@@ -16,8 +16,8 @@ except ImportError:
 
 def test_cache_disabled():
     """Test that DSPy cache is disabled in configuration"""
-    # Get fresh configuration from module import
-    from dspy_elo.llm_comparison import comparer
+    # Get fresh configuration check
+    import dspy_elo.llm_comparison  # Triggers module config
     assert dspy.settings.no_cache is True, "Cache should be disabled for ELO comparisons"
 
 def test_comparison_module_initialization():
