@@ -12,11 +12,23 @@ def test_demo_script_output(capsys):
     """Test the demo script produces expected output"""
     run_demo()
     captured = capsys.readouterr()
+    output = captured.out
 
-    # Check basic output structure
-    assert "Initial ratings" in captured.out
-    assert "After comparison" in captured.out
-    assert "Final ratings" in captured.out
+    # Check all expected sections are present
+    sections = [
+        "ELO Rating System Demo",
+        "Initial ratings:",
+        "After comparison",
+        "Final ratings:"
+    ]
+    for section in sections:
+        assert section in output, f"Missing section: {section}"
 
-    # Check it shows rating changes
-    assert "->" in captured.out
+    # Check rating changes are shown
+    assert "->" in output
+
+    # Verify ratings are numbers
+    import re
+    ratings = re.findall(r"\d+\.?\d*", output)
+    assert len(ratings) >= 4, "Should show at least 4 rating values"
+    assert all(float(r) > 0 for r in ratings), "Ratings should be positive"
