@@ -31,7 +31,7 @@ def run_demo():
         winner_idx, _ = compare_llm_outputs(outputs["A"], outputs["B"])
         winner = "A" if winner_idx == 1 else "B"
         loser = "B" if winner == "A" else "A"
-    except Exception as e:
+    except (ValueError, RuntimeError) as e:
         print(f"Comparison error: {e}")
         winner = "A"
         loser = "B"
