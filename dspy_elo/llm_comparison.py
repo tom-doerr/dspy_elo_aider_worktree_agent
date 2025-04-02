@@ -13,10 +13,7 @@ class ComparisonModule(dspy.Module):
     
     def __init__(self):
         super().__init__()
-        self.compare = dspy.ChainOfThought(
-            "Given these two outputs, which is better? "
-            "output1, output2 -> winner"
-        )
+        self.compare = dspy.ChainOfThought("output1, output2 -> winner")
 
     def forward(self, output1: str, output2: str) -> int:
         """Return 1 if output1 is better, 2 if output2 is better"""
