@@ -7,7 +7,7 @@ from .rating import EloRatingSystem
 from .llm_comparison import compare_llm_outputs
 
 
-def run_demo():
+def run_demo():  # pylint: disable=too-many-locals
     """Run the ELO rating system demo with detailed output"""
     elo = EloRatingSystem()
     modules = ["A", "B", "C", "D"]
@@ -47,7 +47,7 @@ def run_demo():
             winner_idx, _ = compare_llm_outputs(resp1, resp2)
             winner = mod1 if winner_idx == 1 else mod2
             loser = mod2 if winner == mod1 else mod1
-        except Exception as e:
+        except (ValueError, RuntimeError) as e:
             print(f"Comparison error: {e}")
             continue
             
