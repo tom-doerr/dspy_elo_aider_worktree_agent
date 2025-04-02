@@ -26,9 +26,50 @@ def test_with_real_data(tmp_path):
 
     # Test prediction on some samples
     samples = df.sample(2)
-    result = predictor.predict(samples.iloc[0]["text"], samples.iloc[1]["text"])
+    sample1 = samples.iloc[0]
+    sample2 = samples.iloc[1]
+
+    result = predictor.predict(sample1["text"], sample2["text"])
     assert isinstance(result, tuple)
     assert len(result) == 2
+
+    # Verify prediction aligns with rating comparison
+    if sample1["rating"] > sample2["rating"]:
+        assert result == (1, 2)
+    else:
+        assert result == (2, 1)
+
+    # Test rating difference calculation
+    diff = predictor.get_rating_difference(sample1["text"], sample2["text"])
+    expected_diff = abs((sample1["rating"] * 100) - (sample2["rating"] * 100))
+    assert diff == expected_diff
+
+
+@pytest.mark.integration
+def test_real_data_training_flow(tmp_path):
+    """Test complete training and prediction flow with realistic data"""
+    # Create test data that matches spec requirements
+    data = pd.DataFrame(
+        {
+            "text": [
+                "Detailed analysis with multiple examples",
+                "Concise summary",
+                "Technical breakdown with diagrams",
+            ],
+            "rating": [8, 5, 9],
+        }
+    )
+
+    # Test training
+    predictor = train_elo_predictor(data, output_dir=tmp_path)
+
+    # Test predictions
+    result = predictor.predict(data.iloc[0]["text"], data.iloc[2]["text"])
+    assert result == (2, 1)  # Higher rated item should win
+
+    # Verify rating scaling
+    assert predictor.elo.get_rating(data.iloc[0]["text"]) == 800
+    assert predictor.elo.get_rating(data.iloc[2]["text"]) == 900
 
 
 @pytest.mark.integration
@@ -39,15 +80,56 @@ def test_demo_training_data_validation():
         pytest.fail(f"Demo training data not found at {data_path}")
 
     df = pd.read_csv(data_path)
-    
+
     # Validate required columns
     assert {"text", "rating"}.issubset(df.columns), "Missing required columns"
-    
+
     # Validate rating range
     assert df["rating"].between(1, 9).all(), "Ratings must be between 1-9"
-    
+
     # Validate sample count
     assert len(df) >= 10, "Demo data should contain at least 10 samples"
+
+
+@pytest.mark.integration
+def test_training_with_real_data_distribution(tmp_path):
+    """Test trained model maintains rating distribution from data"""
+    data = pd.DataFrame({
+        "text": [f"Response {i}" for i in range(100)],
+        "rating": [1 + i % 9 for i in range(100)]  # Cyclic 1-9 ratings
+    })
+    
+    predictor = train_elo_predictor(data, output_dir=tmp_path)
+    
+    # Verify ratings match scaled input distribution
+    for rating in range(1, 10):
+        scaled = rating * 100
+        count = sum(1 for v in predictor.elo.ratings.values() if v == scaled)
+        assert count >= 10, f"Expected at least 10 ratings of {scaled}"
+
+@pytest.mark.integration
+def test_prediction_accuracy_with_known_data(tmp_path):
+    """Test predictions match expected outcomes from training data"""
+    data = pd.DataFrame({
+        "text": ["Superior response", "Average response", "Poor response"],
+        "rating": [9, 5, 1]
+    })
+    
+    predictor = train_elo_predictor(data, output_dir=tmp_path)
+    
+    # Test all combinations
+    combinations = [
+        (0, 1, (1, 2)),
+        (0, 2, (1, 2)),
+        (1, 2, (1, 2)),
+        (1, 0, (2, 1)),
+        (2, 0, (2, 1)),
+        (2, 1, (2, 1))
+    ]
+    
+    for i, j, expected in combinations:
+        result = predictor.predict(data.iloc[i]["text"], data.iloc[j]["text"])
+        assert result == expected, f"Failed {i} vs {j}"
 
 @pytest.mark.integration
 def test_training_script_cli(tmp_path, monkeypatch):
