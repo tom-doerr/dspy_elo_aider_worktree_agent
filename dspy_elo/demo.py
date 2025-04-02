@@ -27,9 +27,14 @@ def run_demo():
 
     # Compare outputs
     print("\nComparing LLM outputs...")
-    winner_idx, _ = compare_llm_outputs(outputs["A"], outputs["B"])
-    winner = "A" if winner_idx == 1 else "B"
-    loser = "B" if winner == "A" else "A"
+    try:
+        winner_idx, _ = compare_llm_outputs(outputs["A"], outputs["B"])
+        winner = "A" if winner_idx == 1 else "B"
+        loser = "B" if winner == "A" else "A"
+    except Exception as e:
+        print(f"Comparison error: {e}")
+        winner = "A"
+        loser = "B"
 
     print(f"Result: {winner} beats {loser}")
     old_a = elo.get_rating("A")

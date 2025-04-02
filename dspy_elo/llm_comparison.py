@@ -2,6 +2,7 @@
 
 from typing import Tuple
 import dspy
+import re
 
 # Configure DSPy with DeepSeek
 lm = dspy.LM(model="deepseek/deepseek-chat")
@@ -16,7 +17,12 @@ class ComparisonModule(dspy.Module):
     
     def forward(self, output1: str, output2: str) -> int:
         """Return 1 if output1 is better, 2 if output2 is better"""
-        return int(self.compare(output1=output1, output2=output2).winner.split()[0])
+        result = self.compare(output1=output1, output2=output2)
+        # Extract first numerical value from the response
+        if match := re.search(r'\b(1|2)\b', result.winner):
+            return int(match.group(1))
+        # Fallback comparison if no valid number found
+        return 1 if len(output1) > len(output2) else 2
 
 comparer = ComparisonModule()
 
