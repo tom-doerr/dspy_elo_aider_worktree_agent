@@ -14,6 +14,12 @@ except ImportError:
     from dspy_elo.llm_comparison import compare_llm_outputs, ComparisonModule
 
 
+def test_cache_disabled():
+    """Test that DSPy cache is disabled in configuration"""
+    # Get fresh configuration from module import
+    from dspy_elo.llm_comparison import comparer
+    assert dspy.settings.no_cache is True, "Cache should be disabled for ELO comparisons"
+
 def test_comparison_module_initialization():
     """Test the DSPy comparison module initializes correctly"""
     module = ComparisonModule()
