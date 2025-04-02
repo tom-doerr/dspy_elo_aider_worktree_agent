@@ -21,7 +21,7 @@ def training_data_fixture():
 
 def test_bootstrap_fewshot_training(tmp_path, training_data):
     """Test training with bootstrap few-shot as per spec"""
-    predictor = train_elo_predictor(sample_data, output_dir=tmp_path)
+    predictor = train_elo_predictor(training_data, output_dir=tmp_path)
     
     # Verify basic functionality
     assert hasattr(predictor, 'predict')
@@ -31,7 +31,7 @@ def test_bootstrap_fewshot_training(tmp_path, training_data):
     result = predictor.predict("Excellent response", "Poor response")
     assert result == (1, 2)  # Higher rated should win
 
-def test_inference_on_new_samples(training_data):
+def test_inference_on_new_samples():
     """Test comparing new LLM outputs not in training data"""
     # These are new samples not in any training data
     winner, loser = compare_llm_outputs(
@@ -42,7 +42,7 @@ def test_inference_on_new_samples(training_data):
     assert loser in (1, 2)
     assert winner != loser
 
-def test_custom_dataset_workflow(tmp_path, training_data):
+def test_custom_dataset_workflow(tmp_path):
     """Test full workflow with custom dataset"""
     # Create minimal custom dataset
     custom_data = pd.DataFrame({
