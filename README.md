@@ -4,24 +4,35 @@ A simple implementation of the ELO rating system for comparing LLM outputs using
 
 ## Implementation Status
 
-✅ **Core Features Implemented**
-- Basic ELO rating system with K-factor
-- Demo script with simulated comparisons
-- CSV data loading/validation
-- Training CLI scaffolding
-- Rating scaling (1-9 → 100-900)
+✅ **Core Features Implemented**  
+- ELO rating system with configurable K-factor
+- Real DeepSeek model integration for comparisons
+- CSV data validation and rating scaling (1-9 → 100-900)
+- Training CLI with model serialization
+- Live demo with rating updates
 
-⚠️ **Current Limitations**
-- Training uses simple scaling (no ML model)
-- LLM comparisons mocked in tests
-- Hardcoded demo responses
-- Minimal error handling
+⚠️ **Current Limitations**  
+- BootstrapFewShot training not fully implemented
+- Limited dataset format support (CSV only)
+- No batch comparison mode
+- Rating history tracking missing
+
+## Implementation Verification
+✅ **Verified Working**  
+- Real LLM comparisons with DeepSeek  
+- Rating difference calculations  
+- Training data validation  
+- CLI model training workflow  
+
+🚧 **Partial Implementation**  
+- BootstrapFewShot scaffolding (needs model integration)  
+- Basic error handling (needs expansion)  
 
 ## Roadmap
-- [ ] Implement DSPy BootstrapFewShot training
-- [ ] Add real LLM API integration
-- [ ] Comprehensive comparison validation
-- [ ] API error handling system
+- [ ] Complete BootstrapFewShot training
+- [ ] Add rating history tracking
+- [ ] Support JSON/Parquet datasets
+- [ ] Implement batch comparison mode
 
 ## Installation
 
