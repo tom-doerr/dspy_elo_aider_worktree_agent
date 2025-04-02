@@ -28,3 +28,30 @@ def test_with_real_data(tmp_path):
     result = predictor.predict(samples.iloc[0]["text"], samples.iloc[1]["text"])
     assert isinstance(result, tuple)
     assert len(result) == 2
+
+
+@pytest.mark.integration
+def test_training_script_cli(tmp_path, monkeypatch):
+    """Test the training script via command line interface"""
+    # Create sample CSV
+    csv_path = tmp_path / "training.csv"
+    pd.DataFrame({
+        "text": ["Detailed response", "Brief answer"],
+        "rating": [8, 4]
+    }).to_csv(csv_path, index=False)
+    
+    output_dir = tmp_path / "output"
+    
+    # Mock command line arguments
+    monkeypatch.setattr(sys, 'argv', [
+        'train.py',
+        str(csv_path),
+        '--output-dir', str(output_dir)
+    ])
+    
+    # Import and run main
+    from dspy_elo.train import main
+    main()
+    
+    # Verify outputs
+    assert (output_dir / "training_info.txt").exists()
