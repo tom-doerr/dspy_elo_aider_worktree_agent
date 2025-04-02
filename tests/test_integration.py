@@ -9,8 +9,6 @@ try:
     from dspy_elo.training import train_elo_predictor
     from dspy_elo.train import main
 except ImportError:
-    import sys
-
     sys.path.insert(0, str(Path(__file__).parent.parent))
     from dspy_elo.training import train_elo_predictor
     from dspy_elo.train import main
