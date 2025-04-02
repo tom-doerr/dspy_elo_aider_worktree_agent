@@ -22,15 +22,20 @@ def run_demo():
     # Generate some sample LLM outputs
     outputs = {
         "A": "Here is a detailed and thoughtful response to the query.",
-        "B": "Short answer."
+        "B": "Short answer.",
     }
 
     # Compare outputs
     print("\nComparing LLM outputs...")
-    winner_idx, _ = compare_llm_outputs(outputs["A"], outputs["B"])
-    winner = "A" if winner_idx == 1 else "B"
-    loser = "B" if winner == "A" else "A"
-    
+    try:
+        winner_idx, _ = compare_llm_outputs(outputs["A"], outputs["B"])
+        winner = "A" if winner_idx == 1 else "B"
+        loser = "B" if winner == "A" else "A"
+    except (ValueError, RuntimeError) as e:
+        print(f"Comparison error: {e}")
+        winner = "A"
+        loser = "B"
+
     print(f"Result: {winner} beats {loser}")
     old_a = elo.get_rating("A")
     old_b = elo.get_rating("B")
