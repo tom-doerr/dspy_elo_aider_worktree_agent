@@ -29,6 +29,13 @@ def test_compare_llm_outputs_consistent():
     assert result1 == result2
 
 
+def test_compare_llm_outputs_types():
+    """Test comparison returns proper types"""
+    result = compare_llm_outputs("A", "B")
+    assert isinstance(result[0], int)
+    assert isinstance(result[1], int)
+
+
 @pytest.mark.skip(reason="Integration test - requires actual LLM calls")
 def test_compare_llm_outputs_integration():
     """Test actual LLM comparison (skipped by default)"""
