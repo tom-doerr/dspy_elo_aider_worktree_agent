@@ -6,13 +6,13 @@ Predict LLM output quality using ELO ratings trained via bootstrap few-shot.
 
 Feature | Implemented | Verified By | Notes
 --------|-------------|-------------|-------
-DeepSeek model integration | ✅ | [test_deepseek_integration](tests/test_implementation_status.py) | Uses dspy.LM with deepseek-chat
-Bootstrap few-shot training | ✅ | [test_training_implementation](tests/test_training.py) | 
-Real e2e LLM tests | ✅ | [test_llm_comparison](tests/test_llm_comparison.py) | Actual API calls
-Demo dataset validation | ✅ | [test_demo_data_validation](tests/test_integration.py) | Checks data/demo_training_data.csv
-CLI training interface | ✅ | [test_cli_training](tests/test_integration.py) | Produces model files
-Error handling | ✅ | [test_error_handling](tests/test_implementation_status.py) | Validates input data
-Live comparisons | ✅ | [test_comparison_module](tests/test_llm_comparison.py) | No hardcoded responses
+DeepSeek model integration | ✅ | [test_model_uses_deepseek](tests/test_e2e_spec.py) | Configured via dspy.LM
+Bootstrap few-shot training | ✅ | [test_training_scales_ratings_correctly](tests/test_training.py) | Converts 1-9 ratings to 100-900 ELO
+Real e2e LLM tests | ✅ | [test_compare_llm_outputs_integration](tests/test_llm_comparison.py) | Actual API calls with real responses
+Demo dataset validation | ✅ | [test_demo_training_data_validation](tests/test_integration.py) | Validates structure of demo CSV
+CLI training interface | ✅ | [test_training_script_cli](tests/test_integration.py) | Full CLI workflow test
+Error handling | ✅ | [test_training_with_empty_data](tests/test_training.py) | Input validation tests
+Live comparisons | ✅ | [test_compare_llm_outputs_returns_tuple](tests/test_llm_comparison.py) | Real comparisons with no mocks
 
 ## Key Implementation Details
 
