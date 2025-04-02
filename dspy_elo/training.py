@@ -27,10 +27,20 @@ def train_elo_predictor(
     # Create output dir if needed
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Convert ratings to ELO scores
+    # Validate input data
+    if len(training_data) == 0:
+        raise ValueError("Training data cannot be empty")
+    
+    if text_col not in training_data.columns or rating_col not in training_data.columns:
+        raise ValueError(f"Training data must contain '{text_col}' and '{rating_col}' columns")
+
+    # Convert ratings to ELO scores (scale 1-9 to 100-900)
     elo = EloRatingSystem()
     for _, row in training_data.iterrows():
-        elo.ratings[row[text_col]] = row[rating_col] * 100  # Scale 1-9 to 100-900
+        rating = row[rating_col]
+        if not 1 <= rating <= 9:
+            raise ValueError(f"Ratings must be between 1-9, got {rating}")
+        elo.ratings[row[text_col]] = rating * 100
 
     # Create predictor class that uses the trained ELO ratings
     class Predictor:

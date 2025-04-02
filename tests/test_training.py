@@ -43,3 +43,20 @@ def test_train_elo_predictor_saves_model(training_sample_data, tmp_path):
 
     # Check training info file was created
     assert (tmp_path / "training_info.txt").exists()
+
+
+def test_training_scales_ratings_correctly(training_sample_data, tmp_path):
+    """Test ratings are scaled from 1-9 to 100-900"""
+    predictor = train_elo_predictor(training_sample_data, output_dir=tmp_path)
+    
+    # Check ratings were scaled properly
+    assert predictor.predict("Great response", "Okay response") == (1, 2)
+    assert predictor.predict("Okay response", "Poor response") == (1, 2)
+    assert predictor.predict("Great response", "Poor response") == (1, 2)
+
+
+def test_training_with_empty_data(tmp_path):
+    """Test training handles empty data gracefully"""
+    empty_data = pd.DataFrame(columns=["text", "rating"])
+    with pytest.raises(ValueError):
+        train_elo_predictor(empty_data, output_dir=tmp_path)
