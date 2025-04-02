@@ -1,8 +1,6 @@
 """End-to-end tests verifying all functionality in info.md spec"""
 
-import pytest
 import pandas as pd
-from pathlib import Path
 import dspy
 from dspy_elo import train_elo_predictor, compare_llm_outputs
 
