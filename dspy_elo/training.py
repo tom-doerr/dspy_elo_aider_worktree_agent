@@ -30,9 +30,11 @@ def train_elo_predictor(
     # Validate input data
     if len(training_data) == 0:
         raise ValueError("Training data cannot be empty")
-    
+
     if text_col not in training_data.columns or rating_col not in training_data.columns:
-        raise ValueError(f"Training data must contain '{text_col}' and '{rating_col}' columns")
+        raise ValueError(
+            f"Training data must contain '{text_col}' and '{rating_col}' columns"
+        )
 
     # Convert ratings to ELO scores (scale 1-9 to 100-900)
     elo = EloRatingSystem()
