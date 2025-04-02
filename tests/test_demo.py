@@ -1,3 +1,4 @@
+import re
 try:
     from dspy_elo.demo import run_demo
 except ImportError:
@@ -28,7 +29,6 @@ def test_demo_script_output(capsys):
     assert "->" in output
 
     # Verify ratings are numbers
-    import re
     ratings = re.findall(r"\d+\.?\d*", output)
     assert len(ratings) >= 4, "Should show at least 4 rating values"
     assert all(float(r) > 0 for r in ratings), "Ratings should be positive"
