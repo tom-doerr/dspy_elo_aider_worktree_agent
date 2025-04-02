@@ -1,21 +1,29 @@
-"""Compare LLM outputs using DeepSeek API"""
+"""Compare LLM outputs using DeepSeek model via DSPy"""
 
 from typing import Tuple
+import dspy
 
+# Configure DSPy with DeepSeek
+lm = dspy.LM(model="deepseek/deepseek-chat")
+dspy.configure(lm=lm)
+
+class ComparisonModule(dspy.Module):
+    """DSPy module for comparing two LLM outputs"""
+    
+    def __init__(self):
+        super().__init__()
+        self.compare = dspy.ChainOfThought("output1, output2 -> winner")
+    
+    def forward(self, output1: str, output2: str) -> int:
+        """Return 1 if output1 is better, 2 if output2 is better"""
+        return int(self.compare(output1=output1, output2=output2).winner.split()[0])
+
+comparer = ComparisonModule()
 
 def compare_llm_outputs(output1: str, output2: str) -> Tuple[int, int]:
     """
-    Compare two LLM outputs and return which is better.
+    Compare two LLM outputs using DeepSeek model via DSPy.
     Returns tuple of (winner, loser) where values are 1 or 2.
-
-    Args:
-        output1: First LLM output
-        output2: Second LLM output
-
-    Returns:
-        Tuple of (winner, loser) indices (1 or 2)
     """
-    # Currently using simple length comparison as placeholder
-    if len(output1) > len(output2):
-        return (1, 2)
-    return (2, 1)
+    winner = comparer(output1, output2)
+    return (winner, 2 if winner == 1 else 1)

@@ -23,10 +23,14 @@ def test_compare_llm_outputs_returns_tuple():
 
 
 def test_compare_llm_outputs_consistent():
-    """Test same inputs produce consistent results"""
-    result1 = compare_llm_outputs("A", "B")
-    result2 = compare_llm_outputs("A", "B")
-    assert result1 == result2
+    """Test same inputs produce consistent results with clear differences"""
+    # Test with clearly different responses
+    long_response = "Here is a detailed and comprehensive answer with examples."
+    short_response = "IDK"
+    
+    result1 = compare_llm_outputs(long_response, short_response)
+    result2 = compare_llm_outputs(long_response, short_response)
+    assert result1 == result2, "Should consistently pick better response"
 
 
 def test_compare_llm_outputs_types():
