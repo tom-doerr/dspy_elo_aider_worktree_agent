@@ -1,2 +1,2 @@
 [MASTER]
-ignore-patterns=^.*\.md$
+ignore-patterns=^.*\.md$,^.*\.csv$
