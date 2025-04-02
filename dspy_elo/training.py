@@ -27,13 +27,16 @@ def train_elo_predictor(
     # Create output dir if needed
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Validate input data
+    # Validate input data per spec requirements
     if len(training_data) == 0:
         raise ValueError("Training data cannot be empty")
-
-    if text_col not in training_data.columns or rating_col not in training_data.columns:
+    
+    required_cols = {text_col, rating_col}
+    if not required_cols.issubset(training_data.columns):
+        missing = required_cols - set(training_data.columns)
         raise ValueError(
-            f"Training data must contain '{text_col}' and '{rating_col}' columns"
+            f"Training data missing required columns: {missing}. "
+            f"Must contain '{text_col}' and '{rating_col}'"
         )
 
     # Convert ratings to ELO scores (scale 1-9 to 100-900)
