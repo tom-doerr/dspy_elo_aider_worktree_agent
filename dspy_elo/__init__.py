@@ -1,3 +1,3 @@
 from .rating import EloRatingSystem
 
-__all__ = ['EloRatingSystem']
+__all__ = ["EloRatingSystem"]
