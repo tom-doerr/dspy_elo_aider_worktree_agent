@@ -1,5 +1,10 @@
-import pytest
-from dspy_elo.rating import EloRatingSystem
+try:
+    from dspy_elo.rating import EloRatingSystem
+except ImportError:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from dspy_elo.rating import EloRatingSystem
 
 def test_elo_initial_ratings():
     """Test that new modules get default ELO ratings"""
