@@ -20,7 +20,7 @@ def test_demo_script_output(capsys):
     sections = [
         "ELO Rating System Demo",
         "Initial ratings:",
-        "After comparison",
+        "Comparing LLM outputs...",
         "Final ratings:",
     ]
     for section in sections:
