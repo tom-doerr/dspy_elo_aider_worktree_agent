@@ -1,6 +1,5 @@
 """Test package installation and basic imports"""
 
-import importlib
 import sys
 from pathlib import Path
 
