@@ -12,8 +12,8 @@ except ImportError:
     from dspy_elo.training import train_elo_predictor
 
 
-@pytest.fixture
-def sample_data():
+@pytest.fixture(name="sample_data_fixture")
+def sample_data_fixture():
     """Sample data for testing"""
     return pd.DataFrame({
         'text': ['Great response', 'Okay response', 'Poor response'],
@@ -21,9 +21,9 @@ def sample_data():
     })
 
 
-def test_train_elo_predictor(sample_data, tmp_path):
+def test_train_elo_predictor(sample_data_fixture, tmp_path):
     """Test training produces a usable predictor"""
-    predictor = train_elo_predictor(sample_data, output_dir=tmp_path)
+    predictor = train_elo_predictor(sample_data_fixture, output_dir=tmp_path)
     
     # Test it can make predictions
     result = predictor.predict("Great response", "Poor response")
@@ -34,9 +34,9 @@ def test_train_elo_predictor(sample_data, tmp_path):
     assert result[0] != result[1]
 
 
-def test_train_elo_predictor_saves_model(sample_data, tmp_path):
+def test_train_elo_predictor_saves_model(sample_data_fixture, tmp_path):
     """Test training saves model files"""
-    train_elo_predictor(sample_data, output_dir=tmp_path)
+    train_elo_predictor(sample_data_fixture, output_dir=tmp_path)
     
     # Check some expected files were created
     assert (tmp_path / "config.json").exists()

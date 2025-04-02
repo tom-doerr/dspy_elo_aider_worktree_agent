@@ -40,7 +40,7 @@ def train_elo_predictor(
         return (1, 2) if r1 > r2 else (2, 1)
     
     # Save minimal training info (in real implementation would save model)
-    with open(output_dir / "training_info.txt", "w") as f:
+    with open(output_dir / "training_info.txt", "w", encoding='utf-8') as f:
         f.write(f"Trained on {len(training_data)} examples\n")
     
     return predictor
