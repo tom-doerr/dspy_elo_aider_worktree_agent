@@ -2,7 +2,6 @@
 
 import pandas as pd
 import dspy
-from pathlib import Path
 from dspy_elo import train_elo_predictor, compare_llm_outputs
 
 
