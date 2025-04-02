@@ -6,14 +6,12 @@ from unittest.mock import patch
 
 try:
     from dspy_elo.llm_comparison import compare_llm_outputs, ComparisonModule
-    import dspy_elo.llm_comparison  # For config setup
 except ImportError:
     import sys
     from pathlib import Path
 
     sys.path.insert(0, str(Path(__file__).parent.parent))
     from dspy_elo.llm_comparison import compare_llm_outputs, ComparisonModule
-    import dspy_elo.llm_comparison  # For config setup
 
 
 def test_cache_disabled():
