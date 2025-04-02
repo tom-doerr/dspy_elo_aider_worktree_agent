@@ -9,3 +9,4 @@ the dspy elo prediction model can be trained using bootstrapfewshot to more accu
 
 - the api key isn't set when we initialize the model since it is automatically loaded by dspy from the env
 - has real e2e tests that actually use llms and api calls to test
+- remove hardcocded responses
