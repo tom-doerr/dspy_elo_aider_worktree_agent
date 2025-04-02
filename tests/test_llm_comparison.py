@@ -43,7 +43,7 @@ def test_compare_llm_outputs_integration():
     """Test actual LLM comparison with clear differences"""
     long_response = "Detailed response with examples and explanations."
     short_response = "Short"
-    
+
     winner, loser = compare_llm_outputs(long_response, short_response)
     assert winner != loser
     assert winner in (1, 2)
