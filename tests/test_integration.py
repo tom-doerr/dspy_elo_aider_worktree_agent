@@ -39,15 +39,16 @@ def test_demo_training_data_validation():
         pytest.fail(f"Demo training data not found at {data_path}")
 
     df = pd.read_csv(data_path)
-    
+
     # Validate required columns
     assert {"text", "rating"}.issubset(df.columns), "Missing required columns"
-    
+
     # Validate rating range
     assert df["rating"].between(1, 9).all(), "Ratings must be between 1-9"
-    
+
     # Validate sample count
     assert len(df) >= 10, "Demo data should contain at least 10 samples"
+
 
 @pytest.mark.integration
 def test_training_script_cli(tmp_path, monkeypatch):
