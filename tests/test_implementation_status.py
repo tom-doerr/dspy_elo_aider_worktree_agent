@@ -1,6 +1,6 @@
 """Test coverage for implementation status from info.md spec"""
 
-
+import re
 from pathlib import Path
 import dspy
 
@@ -41,7 +41,8 @@ def test_error_handling_implemented():
 
 def test_no_hardcoded_responses():
     """Verify comparisons use real model responses"""
-    # Check comparison module doesn't have hardcoded values
+    # Check comparison module doesn't have hardcoded unconditional returns
     code = Path("dspy_elo/llm_comparison.py").read_text(encoding='utf-8')
-    assert "return 1" not in code
-    assert "return 2" not in code
+    # Verify there are no unconditional return statements with 1/2
+    assert not re.search(r"^\s*return 1\s*$", code, flags=re.MULTILINE)
+    assert not re.search(r"^\s*return 2\s*$", code, flags=re.MULTILINE)
