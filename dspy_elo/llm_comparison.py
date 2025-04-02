@@ -1,5 +1,4 @@
 """Compare LLM outputs using DeepSeek API"""
-import random
 from typing import Tuple
 
 def compare_llm_outputs(output1: str, output2: str) -> Tuple[int, int]:
@@ -14,8 +13,7 @@ def compare_llm_outputs(output1: str, output2: str) -> Tuple[int, int]:
     Returns:
         Tuple of (winner, loser) indices (1 or 2)
     """
-    # TODO: Replace with actual DeepSeek API call
-    # For now, use simple length comparison as placeholder
+    # Currently using simple length comparison as placeholder
     if len(output1) > len(output2):
         return (1, 2)
     return (2, 1)

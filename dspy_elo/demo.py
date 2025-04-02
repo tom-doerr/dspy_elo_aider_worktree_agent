@@ -27,7 +27,7 @@ def run_demo():
 
     # Compare outputs
     print("\nComparing LLM outputs...")
-    winner_idx, loser_idx = compare_llm_outputs(outputs["A"], outputs["B"])
+    winner_idx, _ = compare_llm_outputs(outputs["A"], outputs["B"])
     winner = "A" if winner_idx == 1 else "B"
     loser = "B" if winner == "A" else "A"
     
