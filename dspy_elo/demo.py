@@ -1,9 +1,10 @@
 """
-Demo script showing ELO rating changes step by step.
+Demo script showing ELO rating changes from LLM output comparisons.
 Run with: python -m dspy_elo.demo
 """
 
 from .rating import EloRatingSystem
+from .llm_comparison import compare_llm_outputs
 
 
 def run_demo():
@@ -18,19 +19,22 @@ def run_demo():
     print(f"Module A: {elo.get_rating('A')}")
     print(f"Module B: {elo.get_rating('B')}")
 
-    # First comparison
-    print("\nAfter comparison (A beats B):")
-    old_a = elo.get_rating("A")
-    old_b = elo.get_rating("B")
-    elo.update_ratings("A", "B")
-    print(f"Module A: {old_a} -> {elo.get_rating('A')}")
-    print(f"Module B: {old_b} -> {elo.get_rating('B')}")
+    # Generate some sample LLM outputs
+    outputs = {
+        "A": "Here is a detailed and thoughtful response to the query.",
+        "B": "Short answer."
+    }
 
-    # Second comparison
-    print("\nAfter comparison (B beats A):")
+    # Compare outputs
+    print("\nComparing LLM outputs...")
+    winner_idx, loser_idx = compare_llm_outputs(outputs["A"], outputs["B"])
+    winner = "A" if winner_idx == 1 else "B"
+    loser = "B" if winner == "A" else "A"
+    
+    print(f"Result: {winner} beats {loser}")
     old_a = elo.get_rating("A")
     old_b = elo.get_rating("B")
-    elo.update_ratings("B", "A")
+    elo.update_ratings(winner, loser)
     print(f"Module A: {old_a} -> {elo.get_rating('A')}")
     print(f"Module B: {old_b} -> {elo.get_rating('B')}")
 
