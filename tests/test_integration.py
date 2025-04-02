@@ -6,11 +6,13 @@ from pathlib import Path
 
 try:
     from dspy_elo.training import train_elo_predictor
+    from dspy_elo.train import main
 except ImportError:
     import sys
 
     sys.path.insert(0, str(Path(__file__).parent.parent))
     from dspy_elo.training import train_elo_predictor
+    from dspy_elo.train import main
 
 
 @pytest.mark.integration
@@ -49,8 +51,7 @@ def test_training_script_cli(tmp_path, monkeypatch):
         '--output-dir', str(output_dir)
     ])
     
-    # Import and run main
-    from dspy_elo.train import main
+    # Run main
     main()
     
     # Verify outputs

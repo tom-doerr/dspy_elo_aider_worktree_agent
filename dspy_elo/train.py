@@ -20,13 +20,13 @@ def main():
         # Load and validate data
         df = pd.read_csv(input_path)
         
-        # Train model
-        predictor = train_elo_predictor(df, output_dir)
+        # Train model (assignment not needed as we just need side effects)
+        train_elo_predictor(df, output_dir)
         
         print(f"Successfully trained on {len(df)} examples")
         print(f"Model files saved to: {output_dir.resolve()}")
         
-    except Exception as e:
+    except (FileNotFoundError, pd.errors.EmptyDataError, ValueError) as e:
         print(f"Error: {e}")
         sys.exit(1)
 
