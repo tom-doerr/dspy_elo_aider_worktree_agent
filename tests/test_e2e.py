@@ -11,8 +11,8 @@ except ImportError:
     sys.path.insert(0, str(Path(__file__).parent.parent))
     from dspy_elo import train_elo_predictor, compare_llm_outputs
 
-@pytest.fixture
-def training_sample_data():
+@pytest.fixture(name="sample_data")
+def sample_data_fixture():
     """Sample training data matching spec requirements"""
     return pd.DataFrame({
         "text": [
@@ -24,7 +24,7 @@ def training_sample_data():
         "rating": [9, 7, 5, 2]  # Ratings 1-9 as per spec
     })
 
-def test_training_workflow(tmp_path, training_sample_data):
+def test_training_workflow(tmp_path, sample_data):
     """Test complete training workflow from spec"""
     # Train the model
     predictor = train_elo_predictor(training_sample_data, output_dir=tmp_path)
@@ -39,7 +39,7 @@ def test_training_workflow(tmp_path, training_sample_data):
     )
     assert result == (1, 2)  # Higher rated should win
 
-def test_inference_on_new_samples(training_sample_data):
+def test_inference_on_new_samples():
     """Test inference on unseen samples"""
     # Don't need predictor or tmp_path for this test
     
