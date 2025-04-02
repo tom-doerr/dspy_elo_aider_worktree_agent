@@ -31,7 +31,7 @@ def test_demo_script_output(capsys):
         assert section in output, f"Missing section: {section}"
 
     # Check rating changes are shown
-    assert "->" in output
+    assert "→" in output  # Looking for arrow symbol in changes
 
     # Verify ratings are numbers
     ratings = re.findall(r"\d+\.?\d*", output)
