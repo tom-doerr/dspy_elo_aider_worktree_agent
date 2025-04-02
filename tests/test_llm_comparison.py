@@ -14,6 +14,11 @@ except ImportError:
     from dspy_elo.llm_comparison import compare_llm_outputs, ComparisonModule
 
 
+def test_cache_disabled():
+    """Test that DSPy cache is disabled in configuration"""
+    # Verify config was set by top-level import
+    assert dspy.settings.no_cache is True, "Cache should be disabled for ELO comparisons"
+
 def test_comparison_module_initialization():
     """Test the DSPy comparison module initializes correctly"""
     module = ComparisonModule()
@@ -43,7 +48,7 @@ def test_compare_llm_outputs_integration():
     """Test actual LLM comparison with clear differences"""
     long_response = "Detailed response with examples and explanations."
     short_response = "Short"
-    
+
     winner, loser = compare_llm_outputs(long_response, short_response)
     assert winner != loser
     assert winner in (1, 2)
