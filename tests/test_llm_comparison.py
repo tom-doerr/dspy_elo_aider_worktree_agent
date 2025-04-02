@@ -26,7 +26,7 @@ def test_compare_llm_outputs_consistent():
     """Test same inputs produce consistent results with clear differences"""
     long_response = "Here is a detailed answer with examples and explanations."
     short_response = "IDK"
-    
+
     result1 = compare_llm_outputs(long_response, short_response)
     result2 = compare_llm_outputs(long_response, short_response)
     # Allow either consistent result or fallback to length comparison
