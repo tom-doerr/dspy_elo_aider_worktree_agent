@@ -1,4 +1,5 @@
 import re
+
 try:
     from dspy_elo.demo import run_demo
 except ImportError:
@@ -19,8 +20,8 @@ def test_demo_script_output(capsys):
     sections = [
         "ELO Rating System Demo",
         "Initial ratings:",
-        "After comparison",
-        "Final ratings:"
+        "Comparing LLM outputs...",
+        "Final ratings:",
     ]
     for section in sections:
         assert section in output, f"Missing section: {section}"
