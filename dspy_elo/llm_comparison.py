@@ -10,7 +10,7 @@ dspy.configure(lm=lm)
 
 class ComparisonModule(dspy.Module):
     """DSPy module that compares two text outputs"""
-    
+
     def __init__(self):
         super().__init__()
         self.compare = dspy.ChainOfThought("output1, output2 -> winner")
