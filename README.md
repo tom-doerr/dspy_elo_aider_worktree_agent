@@ -42,13 +42,41 @@ The tests verify:
 
 ## Training ELO Predictor
 
-To train on your own dataset:
+### Input Data Format
+Create a CSV file with:
+- `text`: LLM output text (string)
+- `rating`: Quality rating (1-9 scale, integer)
+
+Example `data/ratings.csv`:
+```csv
+text,rating
+"Detailed response with examples",8
+"Concise answer",5
+"Vague response",2
+```
+
+### CLI Usage
+```bash
+python -m dspy_elo.train data/ratings.csv --output-dir elo_model
+```
+
+### Output Files
+Trained model directory contains:
+- `training_info.txt`: Metadata about training run
+- (Future: model weights when implemented)
+
+### Python API
 ```python
-from dspy_elo.training import train_elo_predictor
+from dspy_elo import train_elo_predictor
 import pandas as pd
 
-data = pd.DataFrame({
-    "text": ["sample1", "sample2"],
-    "rating": [5, 8]  # Ratings 1-9
-})
-predictor = train_elo_predictor(data)
+# Load your data
+data = pd.read_csv("data/ratings.csv")
+
+# Train and save model
+predictor = train_elo_predictor(data, output_dir="elo_model")
+
+# Compare new texts
+prediction = predictor.predict("Full analysis", "Brief summary")
+print(f"Preferred output: Text {prediction[0]}")
+```
