@@ -5,11 +5,13 @@ import sys
 from pathlib import Path
 
 try:
+    import dspy_elo
     from dspy_elo.rating import EloRatingSystem
     from dspy_elo.demo import run_demo
     from dspy_elo import __version__
 except ImportError:
     sys.path.insert(0, str(Path(__file__).parent.parent))
+    import dspy_elo
     from dspy_elo.rating import EloRatingSystem
     from dspy_elo.demo import run_demo
     from dspy_elo import __version__
