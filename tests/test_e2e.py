@@ -2,11 +2,17 @@
 
 import pytest
 import pandas as pd
+import sys
 from pathlib import Path
-from dspy_elo import train_elo_predictor, compare_llm_outputs
+
+try:
+    from dspy_elo import train_elo_predictor, compare_llm_outputs
+except ImportError:
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from dspy_elo import train_elo_predictor, compare_llm_outputs
 
 @pytest.fixture
-def sample_data():
+def training_sample_data():
     """Sample training data matching spec requirements"""
     return pd.DataFrame({
         "text": [
@@ -18,10 +24,10 @@ def sample_data():
         "rating": [9, 7, 5, 2]  # Ratings 1-9 as per spec
     })
 
-def test_training_workflow(tmp_path, sample_data):
+def test_training_workflow(tmp_path, training_sample_data):
     """Test complete training workflow from spec"""
     # Train the model
-    predictor = train_elo_predictor(sample_data, output_dir=tmp_path)
+    predictor = train_elo_predictor(training_sample_data, output_dir=tmp_path)
     
     # Verify outputs exist
     assert (tmp_path / "training_info.txt").exists()
@@ -33,9 +39,9 @@ def test_training_workflow(tmp_path, sample_data):
     )
     assert result == (1, 2)  # Higher rated should win
 
-def test_inference_on_new_samples(tmp_path, sample_data):
+def test_inference_on_new_samples(training_sample_data):
     """Test inference on unseen samples"""
-    predictor = train_elo_predictor(sample_data, output_dir=tmp_path)
+    # Don't need predictor or tmp_path for this test
     
     # Compare new samples not in training data
     winner, loser = compare_llm_outputs(
