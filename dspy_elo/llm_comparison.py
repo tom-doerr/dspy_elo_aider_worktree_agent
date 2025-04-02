@@ -3,9 +3,9 @@
 from typing import Tuple
 import dspy
 
-# Configure DSPy with DeepSeek
+# Configure DSPy with DeepSeek and disable caching
 lm = dspy.LM(model="deepseek/deepseek-chat")
-dspy.configure(lm=lm)
+dspy.configure(lm=lm, no_cache=True)
 
 
 class ComparisonModule(dspy.Module):
