@@ -1,32 +1,40 @@
 # DSPy ELO Rating System
 
-A simple implementation of the ELO rating system for comparing LLM outputs using DSPy and DeepSeek.
+Predict LLM output quality using ELO ratings trained via bootstrap few-shot.
 
 ## Implementation Status
 
-✅ **Core Features Implemented**  
-- ELO rating system with configurable K-factor
-- Real DeepSeek model integration for comparisons
-- CSV data validation and rating scaling (1-9 → 100-900)
-- Training CLI with model serialization
-- Live demo with rating updates
+✅ Implemented:
+- DeepSeek model integration via dspy.LM
+- ELO rating system core logic
+- Basic training from CSV data
+- CLI training interface
+- Demo script with example comparisons
+- Integration tests with real data
+- CI-ready test suite
 
-⚠️ **Current Limitations**  
-- BootstrapFewShot training not fully implemented
-- Limited dataset format support (CSV only)
-- No batch comparison mode
-- Rating history tracking missing
+⚠️ Partial Implementation:
+- Bootstrap few-shot training (simple scaling currently)
+- LLM comparison module (needs more robust parsing)
 
-## Implementation Verification
-✅ **Verified Working**  
-- Real LLM comparisons with DeepSeek  
-- Rating difference calculations  
-- Training data validation  
-- CLI model training workflow  
+🚧 Not Implemented:
+- Customizable rating scales  
+- Advanced few-shot example selection
+- Model configuration export/import
+- Rating history tracking
 
-🚧 **Partial Implementation**  
-- BootstrapFewShot scaffolding (needs model integration)  
-- Basic error handling (needs expansion)  
+## Test Coverage Status
+
+```text
+tests/
+├── test_demo.py            ✅ Basic demo output checks
+├── test_e2e.py             ✅ End-to-end workflow tests  
+├── test_e2e_spec.py        ✅ Spec verification tests
+├── test_elo_rating.py      ✅ Core ELO logic tests
+├── test_integration.py     ✅ Data integration tests
+├── test_llm_comparison.py  ⚠️ Needs less mocking
+├── test_package_installation.py ✅ Packaging checks
+└── test_training.py        ⚠️ Needs true bootstrap tests
 
 ## Roadmap
 - [ ] Complete BootstrapFewShot training
