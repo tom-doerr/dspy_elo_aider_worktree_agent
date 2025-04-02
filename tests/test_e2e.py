@@ -27,7 +27,7 @@ def sample_data_fixture():
 def test_training_workflow(tmp_path, sample_data):
     """Test complete training workflow from spec"""
     # Train the model
-    predictor = train_elo_predictor(training_sample_data, output_dir=tmp_path)
+    predictor = train_elo_predictor(sample_data, output_dir=tmp_path)
     
     # Verify outputs exist
     assert (tmp_path / "training_info.txt").exists()
