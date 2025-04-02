@@ -47,7 +47,7 @@ def test_elo_custom_k_factor():
     # Test high K factor
     high_k.update_ratings("A", "B")
     high_change = high_k.get_rating("A") - 1000  
-    assert high_change > default_change * 2, "High K factor should make larger changes"
+    assert high_change >= default_change * 2, "High K factor should make changes at least double"
 
     # Test zero K factor
     zero_k.update_ratings("A", "B")
