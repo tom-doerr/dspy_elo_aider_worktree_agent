@@ -79,7 +79,7 @@ def test_demo_training_data_validation():
     if not data_path.exists():
         pytest.fail(f"Demo training data not found at {data_path}")
 
-    df = pd.read_csv(data_path)
+    df = pd.read_csv(data_path, comment='#')
 
     # Validate required columns
     assert {"text", "rating"}.issubset(df.columns), "Missing required columns"
