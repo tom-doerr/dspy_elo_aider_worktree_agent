@@ -16,7 +16,6 @@ except ImportError:
     from dspy_elo import __version__
 
 
-
 def test_import_rating_system():
     """Test the EloRatingSystem can be imported"""
     assert EloRatingSystem is not None
@@ -31,14 +30,16 @@ def test_package_version():
     """Test package has a version string"""
     assert isinstance(__version__, str)
     assert len(__version__) > 0
-    assert all(c.isdigit() or c == '.' for c in __version__), "Version should be numeric"
+    assert all(
+        c.isdigit() or c == "." for c in __version__
+    ), "Version should be numeric"
 
 
 def test_package_metadata():
     """Test package metadata is complete"""
-    assert hasattr(dspy_elo, '__version__')
-    assert hasattr(dspy_elo, '__author__')
-    assert hasattr(dspy_elo, '__license__')
+    assert hasattr(dspy_elo, "__version__")
+    assert hasattr(dspy_elo, "__author__")
+    assert hasattr(dspy_elo, "__license__")
     assert isinstance(dspy_elo.__author__, str)
     assert isinstance(dspy_elo.__license__, str)
     assert len(dspy_elo.__author__) > 0

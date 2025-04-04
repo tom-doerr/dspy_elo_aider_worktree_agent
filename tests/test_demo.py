@@ -11,10 +11,19 @@ except ImportError:
 
 
 def test_demo_script_output(capsys):
-    """Test the demo script produces expected output"""
+    """Test the demo script produces expected output as documented"""
     run_demo()
     captured = capsys.readouterr()
     output = captured.out
+    
+    # Verify documented output sections exist
+    assert "ELO Rating System Demo" in output
+    assert "Initial Ratings:" in output 
+    assert "Round 1 Comparison:" in output
+    assert "Final Ratings:" in output
+    
+    # Verify it shows rating changes
+    assert "→" in output or "->" in output
 
     # Check all expected sections are present
     sections = [

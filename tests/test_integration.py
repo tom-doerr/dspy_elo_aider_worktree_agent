@@ -79,7 +79,7 @@ def test_demo_training_data_validation():
     if not data_path.exists():
         pytest.fail(f"Demo training data not found at {data_path}")
 
-    df = pd.read_csv(data_path)
+    df = pd.read_csv(data_path, comment='#')
 
     # Validate required columns
     assert {"text", "rating"}.issubset(df.columns), "Missing required columns"
@@ -94,29 +94,34 @@ def test_demo_training_data_validation():
 @pytest.mark.integration
 def test_training_with_real_data_distribution(tmp_path):
     """Test trained model maintains rating distribution from data"""
-    data = pd.DataFrame({
-        "text": [f"Response {i}" for i in range(100)],
-        "rating": [1 + i % 9 for i in range(100)]  # Cyclic 1-9 ratings
-    })
-    
+    data = pd.DataFrame(
+        {
+            "text": [f"Response {i}" for i in range(100)],
+            "rating": [1 + i % 9 for i in range(100)],  # Cyclic 1-9 ratings
+        }
+    )
+
     predictor = train_elo_predictor(data, output_dir=tmp_path)
-    
+
     # Verify ratings match scaled input distribution
     for rating in range(1, 10):
         scaled = rating * 100
         count = sum(1 for v in predictor.elo.ratings.values() if v == scaled)
         assert count >= 10, f"Expected at least 10 ratings of {scaled}"
 
+
 @pytest.mark.integration
 def test_prediction_accuracy_with_known_data(tmp_path):
     """Test predictions match expected outcomes from training data"""
-    data = pd.DataFrame({
-        "text": ["Superior response", "Average response", "Poor response"],
-        "rating": [9, 5, 1]
-    })
-    
+    data = pd.DataFrame(
+        {
+            "text": ["Superior response", "Average response", "Poor response"],
+            "rating": [9, 5, 1],
+        }
+    )
+
     predictor = train_elo_predictor(data, output_dir=tmp_path)
-    
+
     # Test all combinations
     combinations = [
         (0, 1, (1, 2)),
@@ -124,16 +129,17 @@ def test_prediction_accuracy_with_known_data(tmp_path):
         (1, 2, (1, 2)),
         (1, 0, (2, 1)),
         (2, 0, (2, 1)),
-        (2, 1, (2, 1))
+        (2, 1, (2, 1)),
     ]
-    
+
     for i, j, expected in combinations:
         result = predictor.predict(data.iloc[i]["text"], data.iloc[j]["text"])
         assert result == expected, f"Failed {i} vs {j}"
 
+
 @pytest.mark.integration
 def test_training_script_cli(tmp_path, monkeypatch):
-    """Test the training script via command line interface"""
+    """Test the training script CLI matches README documentation"""
     # Create sample CSV
     csv_path = tmp_path / "training.csv"
     pd.DataFrame(
