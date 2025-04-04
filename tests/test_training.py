@@ -48,7 +48,7 @@ def test_train_elo_predictor_saves_model(training_sample_data, tmp_path):
 def test_training_scales_ratings_correctly(training_sample_data, tmp_path):
     """Test ratings are scaled from 1-9 to 100-900"""
     predictor = train_elo_predictor(training_sample_data, output_dir=tmp_path)
-    
+
     # Check actual numeric ratings
     assert predictor.elo.get_rating("Great response") == 900
     assert predictor.elo.get_rating("Okay response") == 500
