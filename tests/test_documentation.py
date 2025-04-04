@@ -1,9 +1,7 @@
 """Test README documentation examples work as advertised"""
 
-import re
 from pathlib import Path
 import pandas as pd
-import pytest
 
 try:
     from dspy_elo import train_elo_predictor, compare_llm_outputs
