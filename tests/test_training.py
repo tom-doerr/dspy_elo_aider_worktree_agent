@@ -49,10 +49,20 @@ def test_training_scales_ratings_correctly(training_sample_data, tmp_path):
     """Test ratings are scaled from 1-9 to 100-900"""
     predictor = train_elo_predictor(training_sample_data, output_dir=tmp_path)
     
-    # Check actual numeric ratings
-    assert predictor.elo.get_rating("Great response") == 900
-    assert predictor.elo.get_rating("Okay response") == 500
-    assert predictor.elo.get_rating("Poor response") == 100
+    # Verify scaling logic for all samples
+    expected_ratings = {
+        "Great response": 900,
+        "Okay response": 500, 
+        "Poor response": 100
+    }
+    
+    for text, expected in expected_ratings.items():
+        assert predictor.elo.get_rating(text) == expected, \
+            f"Rating mismatch for {text}. Expected {expected}, got {predictor.elo.get_rating(text)}"
+            
+    # Verify unknown text returns default rating
+    assert predictor.elo.get_rating("Unseen response") == 1000, \
+        "Unknown text should get default rating"
 
 
 def test_training_with_empty_data(tmp_path):

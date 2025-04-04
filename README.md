@@ -7,12 +7,19 @@ Predict LLM output quality using ELO ratings trained via bootstrap few-shot.
 Feature | Implemented | Verified By | Notes
 --------|-------------|-------------|-------
 DeepSeek model integration | ✅ | [test_model_uses_deepseek](tests/test_e2e_spec.py) | Configured via dspy.LM
-Bootstrap few-shot training | ✅ | [test_training_scales_ratings_correctly](tests/test_training.py) | Converts 1-9 ratings to 100-900 ELO
+Bootstrap few-shot training | ⚠️ | [test_training_scales_ratings_correctly](tests/test_training.py) | Simple scaling vs true bootstrap
 Real e2e LLM tests | ✅ | [test_compare_llm_outputs_integration](tests/test_llm_comparison.py) | Actual API calls with real responses
 Demo dataset validation | ✅ | [test_demo_training_data_validation](tests/test_integration.py) | Validates structure of demo CSV
 CLI training interface | ✅ | [test_training_script_cli](tests/test_integration.py) | Full CLI workflow test
 Error handling | ✅ | [test_training_with_empty_data](tests/test_training.py) | Input validation tests
-Live comparisons | ✅ | [test_compare_llm_outputs_returns_tuple](tests/test_llm_comparison.py) | Real comparisons with no mocks
+Live comparisons | ✅ | [test_demo_script_output](tests/test_demo.py) | Real comparisons with no mocks
+Rating core logic | ✅ | [test_elo_initial_ratings](tests/test_elo_rating.py) | Full ELO update rules
+
+## Implementation Notes
+- ❗ Bootstrap few-shot currently uses simple rating scaling (1-9 → 100-900)
+- ❗ Training persistence only saves metadata (no model weights yet)
+- ✅ All comparisons make real LLM API calls with DeepSeek
+- ✅ Full test coverage for rating system core logic
 
 ## Key Implementation Details
 
