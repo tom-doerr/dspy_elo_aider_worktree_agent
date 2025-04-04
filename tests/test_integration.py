@@ -139,7 +139,7 @@ def test_prediction_accuracy_with_known_data(tmp_path):
 
 @pytest.mark.integration
 def test_training_script_cli(tmp_path, monkeypatch):
-    """Test the training script via command line interface"""
+    """Test the training script CLI matches README documentation"""
     # Create sample CSV
     csv_path = tmp_path / "training.csv"
     pd.DataFrame(
