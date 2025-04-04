@@ -1,3 +1,5 @@
+# Demo training data for ELO rating system
+# Format: text (string), rating (integer 1-9 where 9 is best)
 text,rating
 "Comprehensive analysis incorporating multiple supporting examples drawn from recent research studies, with detailed citations and cross-references",9
 "Clear step-by-step explanation that breaks down complex concepts into digestible parts with practical examples",8
